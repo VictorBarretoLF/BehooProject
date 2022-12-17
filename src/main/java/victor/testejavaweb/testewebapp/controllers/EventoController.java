@@ -37,15 +37,15 @@ public class EventoController {
         return new ResponseEntity<>(novoEvento, HttpStatus.CREATED);
     }
 
-    @GetMapping("/eventos/{eventoId}/evento")
+    @GetMapping("/eventos/usuario-by-evento/{eventoId}")
     public ResponseEntity<List<Usuario>> getAllTagsByTutorialId(@PathVariable(value = "eventoId") Long eventoId) {
-        System.out.println(eventoId);
+
         if (!usuarioRepository.existsById(eventoId)) {
             return ResponseEntity.notFound().build();
         }
 
         List<Usuario> usuarios = usuarioRepository.findUsuariosByEventosId(eventoId);
-        
+
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
