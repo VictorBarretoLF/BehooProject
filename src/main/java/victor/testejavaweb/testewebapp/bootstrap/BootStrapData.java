@@ -3,7 +3,9 @@ package victor.testejavaweb.testewebapp.bootstrap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import victor.testejavaweb.testewebapp.domain.Evento;
+import victor.testejavaweb.testewebapp.domain.Usuario;
 import victor.testejavaweb.testewebapp.repositories.EventoRepository;
+import victor.testejavaweb.testewebapp.repositories.UsuarioRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,9 +14,11 @@ import java.time.format.DateTimeFormatter;
 public class BootStrapData implements CommandLineRunner {
 
     private final EventoRepository eventoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public BootStrapData(EventoRepository eventoRepository) {
+    public BootStrapData(EventoRepository eventoRepository, UsuarioRepository usuarioRepository) {
         this.eventoRepository = eventoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -27,6 +31,9 @@ public class BootStrapData implements CommandLineRunner {
         evento.setDataHoraInicio(LocalDateTime.parse("20-07-2023 10:30:00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         evento.setDataHoraFim(LocalDateTime.parse("20-07-2023 18:00:00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         eventoRepository.save(evento);
+
+        Usuario usuario = new Usuario("Víctor Barreto");
+        usuarioRepository.save(usuario);
     }
 
 }
