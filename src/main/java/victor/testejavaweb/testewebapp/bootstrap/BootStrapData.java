@@ -27,9 +27,9 @@ public class BootStrapData implements CommandLineRunner {
 
         Evento evento = new Evento();
         evento.setNome("Festa de Rua");
-        evento.setVagas(40L);
-        evento.setDataHoraFim("20-07-2023 18:00:00");
-        evento.setDataHoraInicio("20-07-2023 10:30:00");
+        evento.setVagas(2L);
+        evento.setDataHoraFim("17-07-2022 22:00:00");
+        evento.setDataHoraInicio("17-12-2022 18:30:00");
 
         Usuario usuario = new Usuario("Víctor Barreto");
 
@@ -38,7 +38,12 @@ public class BootStrapData implements CommandLineRunner {
         evento.getUsuarios().add(usuario);
         eventoRepository.save(evento);
 
-        System.out.println(evento.getUsuarios());
+        usuario = new Usuario("Lucas Víctor");
+        usuarioRepository.save(usuario);
+        usuario = new Usuario("Fernando Henrrique");
+        usuarioRepository.save(usuario);
+
+        System.out.println("Finished in Bootstrap");
     }
 
 }

@@ -9,6 +9,8 @@ import victor.testejavaweb.testewebapp.domain.Usuario;
 import victor.testejavaweb.testewebapp.repositories.EventoRepository;
 import victor.testejavaweb.testewebapp.repositories.UsuarioRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -35,7 +37,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios/eventos-by-usuario/{usuarioId}")
-    public ResponseEntity<List<Evento>> getAllTagsByTutorialId(@PathVariable(value = "usuarioId") Long usuarioId) {
+    public ResponseEntity<List<Evento>> getAllEventosByUsuarioId(@PathVariable(value = "usuarioId") Long usuarioId) {
 
         if (!eventoRepository.existsById(usuarioId)) {
             return ResponseEntity.notFound().build();
@@ -44,5 +46,42 @@ public class UsuarioController {
         List<Evento> eventos = eventoRepository.findEventosByUsuariosId(usuarioId);
 
         return new ResponseEntity<>(eventos, HttpStatus.OK);
+    }
+
+    @PutMapping("/usuarios/inscricao/{usuarioId}/{eventoId}")
+    public ResponseEntity<?> createInscricaoUsuario(
+            @PathVariable(value = "usuarioId") Long usuarioId,
+            @PathVariable(value = "eventoId") Long eventoId) {
+
+        if(!usuarioRepository.existsById(usuarioId)) {
+            return new ResponseEntity<>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        if(!eventoRepository.existsById(eventoId)) {
+            return new ResponseEntity<>("Evento não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        Evento evento = eventoRepository.findById(eventoId).get();
+        // Verificando se o usuário já está inscrito
+        if(evento.getUsuarios().contains(usuario)) {
+            return new ResponseEntity<>("Usuário já inscrito nesse evento!", HttpStatus.BAD_REQUEST);
+        }
+        // Aintigido o limite de vagas
+        if(evento.getUsuarios().size() == evento.getVagas()) {
+            return new ResponseEntity<>("Limite de vagas atingido!", HttpStatus.BAD_REQUEST);
+        }
+
+        // Verificando se o evento já foi iniciado
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime eventoBeginTime = LocalDateTime.parse(evento.getDataHoraInicio(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        if(timeNow.isAfter(eventoBeginTime)) {
+            return new ResponseEntity<>("Evento já iniciado, não é possível fazer a inscrição.", HttpStatus.BAD_REQUEST);
+        }
+
+        evento.getUsuarios().add(usuario);
+        eventoRepository.save(evento);
+
+        return new ResponseEntity<>("Inscrição realizada com sucesso!", HttpStatus.OK);
     }
 }
