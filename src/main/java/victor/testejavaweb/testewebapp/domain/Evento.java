@@ -19,6 +19,9 @@ public class Evento {
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
 
+    public Evento() {
+    }
+
     public String getNome() {
         return nome;
     }
