@@ -19,12 +19,12 @@ public class UsuarioController {
     UsuarioRepository usuarioRepository;
 
     @GetMapping("/usuarios")
-    public List<Usuario> getAllEventos() {
+    public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<Usuario> createTutorial(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
         Usuario novoUsuario = new Usuario(usuario.getNome());
         usuarioRepository.save(novoUsuario);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
