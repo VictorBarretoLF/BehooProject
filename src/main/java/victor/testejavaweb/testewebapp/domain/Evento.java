@@ -1,12 +1,11 @@
 package victor.testejavaweb.testewebapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Evento {
@@ -18,6 +17,11 @@ public class Evento {
     private Long vagas;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
+
+    @ManyToMany
+    @JoinTable(name = "usuario_evento", joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> usuarios = new HashSet<>();
 
     public Evento() {
     }
@@ -40,6 +44,14 @@ public class Evento {
 
     public LocalDateTime getDataHoraInicio() {
         return dataHoraInicio;
+    }
+
+    public Set<Usuario> getAuthors() {
+        return usuarios;
+    }
+
+    public void setAuthors(Set<Usuario> authors) {
+        this.usuarios = authors;
     }
 
     public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
