@@ -46,11 +46,11 @@ public class Evento {
         return dataHoraInicio;
     }
 
-    public Set<Usuario> getAuthors() {
+    public Set<Usuario> getUsuarios() {
         return usuarios;
     }
 
-    public void setAuthors(Set<Usuario> authors) {
+    public void setUsuarios(Set<Usuario> authors) {
         this.usuarios = authors;
     }
 
