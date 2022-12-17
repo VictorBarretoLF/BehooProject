@@ -1,5 +1,6 @@
 package victor.testejavaweb.testewebapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,13 @@ public class Usuario {
     private Long id;
     private String nome;
 
-    @ManyToMany(mappedBy = "usuarios")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "usuarios")
+    @JsonIgnore
     private Set<Evento> eventos = new HashSet<>();
 
     public Usuario() {

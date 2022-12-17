@@ -28,15 +28,14 @@ public class BootStrapData implements CommandLineRunner {
         Evento evento = new Evento();
         evento.setNome("Festa de Rua");
         evento.setVagas(40L);
-        evento.setDataHoraFim(LocalDateTime.parse("20-07-2023 18:00:00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
-        evento.setDataHoraInicio(LocalDateTime.parse("20-07-2023 10:30:00", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        evento.setDataHoraFim("20-07-2023 18:00:00");
+        evento.setDataHoraInicio("20-07-2023 10:30:00");
 
         Usuario usuario = new Usuario("Víctor Barreto");
+
         usuario.getEventos().add(evento);
         usuarioRepository.save(usuario);
-
         evento.getUsuarios().add(usuario);
-
         eventoRepository.save(evento);
 
         System.out.println(evento.getUsuarios());
