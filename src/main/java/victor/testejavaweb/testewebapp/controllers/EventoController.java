@@ -49,4 +49,31 @@ public class EventoController {
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
+    @PutMapping("/eventos/entrada/{usuarioId}/{eventoId}")
+    public ResponseEntity<?> cancelarInscricaoUsuario(
+            @PathVariable(value = "usuarioId") Long usuarioId,
+            @PathVariable(value = "eventoId") Long eventoId) {
+
+        if(!usuarioRepository.existsById(usuarioId)) {
+            return new ResponseEntity<>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        if(!eventoRepository.existsById(eventoId)) {
+            return new ResponseEntity<>("Evento não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        // TODO: O USUÁRIO SÓ PODERÁ ENTRAR NO EVENTO NO PERÍODO DE UMA HORA ANTES DO INICIO DO EVENTO
+
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        Evento evento = eventoRepository.findById(eventoId).get();
+
+        evento.getEntrada().add(usuario);
+        eventoRepository.save(evento);
+
+        usuario.setEntrada(evento);
+        usuarioRepository.save(usuario);
+
+        return new ResponseEntity<>("Entrada realizada com sucesso!", HttpStatus.OK);
+    }
+
 }
