@@ -1,12 +1,11 @@
 package victor.testejavaweb.testewebapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Evento {
@@ -16,10 +15,27 @@ public class Evento {
     private Long id;
     private String nome;
     private Long vagas;
-    private LocalDateTime dataHoraInicio;
-    private LocalDateTime dataHoraFim;
+    private String dataHoraInicio;
+    private String dataHoraFim;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "usuario_evento",
+            joinColumns = { @JoinColumn(name = "evento_id") },
+            inverseJoinColumns = { @JoinColumn(name = "usuario_id") })
+    private Set<Usuario> usuarios = new HashSet<>();
 
     public Evento() {
+    }
+
+    public Evento(String nome, Long vagas, String dataHoraInicio, String dataHoraFim) {
+        this.nome = nome;
+        this.vagas = vagas;
+        this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
     }
 
     public String getNome() {
@@ -38,19 +54,27 @@ public class Evento {
         this.vagas = vagas;
     }
 
-    public LocalDateTime getDataHoraInicio() {
+    public String getDataHoraInicio() {
         return dataHoraInicio;
     }
 
-    public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
+    public Set<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Set<Usuario> authors) {
+        this.usuarios = authors;
+    }
+
+    public void setDataHoraInicio(String dataHoraInicio) {
         this.dataHoraInicio = dataHoraInicio;
     }
 
-    public LocalDateTime getDataHoraFim() {
+    public String getDataHoraFim() {
         return dataHoraFim;
     }
 
-    public void setDataHoraFim(LocalDateTime dataHoraFim) {
+    public void setDataHoraFim(String dataHoraFim) {
         this.dataHoraFim = dataHoraFim;
     }
 
