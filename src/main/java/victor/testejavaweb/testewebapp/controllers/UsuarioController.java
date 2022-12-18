@@ -82,7 +82,7 @@ public class UsuarioController {
         evento.getUsuarios().add(usuario);
         eventoRepository.save(evento);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Usuário inscrito com sucesso!", HttpStatus.OK);
     }
 
     @PutMapping("/usuarios/cancelar/{usuarioId}/{eventoId}")
