@@ -82,6 +82,33 @@ public class UsuarioController {
         evento.getUsuarios().add(usuario);
         eventoRepository.save(evento);
 
-        return new ResponseEntity<>("Inscrição realizada com sucesso!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/usuarios/cancelar/{usuarioId}/{eventoId}")
+    public ResponseEntity<?> cancelarInscricaoUsuario(
+            @PathVariable(value = "usuarioId") Long usuarioId,
+            @PathVariable(value = "eventoId") Long eventoId) {
+
+        if(!usuarioRepository.existsById(usuarioId)) {
+            return new ResponseEntity<>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        if(!eventoRepository.existsById(eventoId)) {
+            return new ResponseEntity<>("Evento não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        Evento evento = eventoRepository.findById(eventoId).get();
+
+        // Verificando se o usuário não está inscrito no evento
+        if(!evento.getUsuarios().contains(usuario)) {
+            return new ResponseEntity<>("Usuário não está inscrito no evento.", HttpStatus.BAD_REQUEST);
+        }
+
+        evento.getUsuarios().remove(usuario);
+        eventoRepository.save(evento);
+
+        return new ResponseEntity<>("Incrição para o evento cancelada!", HttpStatus.OK);
     }
 }
