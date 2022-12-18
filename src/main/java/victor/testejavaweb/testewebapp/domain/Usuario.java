@@ -25,6 +25,11 @@ public class Usuario {
     @JsonIgnore
     private Set<Evento> eventos = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tutorial_id", nullable = true)
+    @JsonIgnore
+    private Evento entrada;
+
     public Usuario() {
     }
 
@@ -54,6 +59,14 @@ public class Usuario {
 
     public void setEventos(Set<Evento> eventos) {
         this.eventos = eventos;
+    }
+
+    public Evento getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(Evento entrada) {
+        this.entrada = entrada;
     }
 
     @Override
