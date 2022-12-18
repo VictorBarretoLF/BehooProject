@@ -36,10 +36,10 @@ public class UsuarioController {
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
-    @GetMapping("/usuarios/eventos-by-usuario/{usuarioId}")
+    @GetMapping("/usuarios/find-eventos-by-usuario/{usuarioId}")
     public ResponseEntity<List<Evento>> getAllEventosByUsuarioId(@PathVariable(value = "usuarioId") Long usuarioId) {
 
-        if (!eventoRepository.existsById(usuarioId)) {
+        if (!usuarioRepository.existsById(usuarioId)) {
             return ResponseEntity.notFound().build();
         }
 
