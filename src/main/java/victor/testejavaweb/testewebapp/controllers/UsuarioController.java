@@ -106,6 +106,11 @@ public class UsuarioController {
             return new ResponseEntity<>("Usuário não está inscrito no evento.", HttpStatus.BAD_REQUEST);
         }
 
+        // verificando se o usuário já entrou no evento
+        if(evento.getEntrada().contains(usuario)) {
+            return new ResponseEntity<>("Usuário já entrou no evento.", HttpStatus.BAD_REQUEST);
+        }
+
         evento.getUsuarios().remove(usuario);
         eventoRepository.save(evento);
 

@@ -11,6 +11,8 @@ import victor.testejavaweb.testewebapp.domain.Usuario;
 import victor.testejavaweb.testewebapp.repositories.EventoRepository;
 import victor.testejavaweb.testewebapp.repositories.UsuarioRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,40 @@ public class EventoController {
         List<Usuario> usuarios = usuarioRepository.findUsuariosByEventosId(eventoId);
 
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
+    }
+
+    @PutMapping("/eventos/entrada/{usuarioId}/{eventoId}")
+    public ResponseEntity<?> entrarNoEvento(
+            @PathVariable(value = "usuarioId") Long usuarioId,
+            @PathVariable(value = "eventoId") Long eventoId) {
+
+        if(!usuarioRepository.existsById(usuarioId)) {
+            return new ResponseEntity<>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        if(!eventoRepository.existsById(eventoId)) {
+            return new ResponseEntity<>("Evento não encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        Evento evento = eventoRepository.findById(eventoId).get();
+
+        // TODO: O USUÁRIO SÓ PODERÁ ENTRAR NO EVENTO NO PERÍODO DE UMA HORA ANTES DO INICIO DO EVENTO
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime eventoBeginTime = LocalDateTime.parse(evento.getDataHoraInicio(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        LocalDateTime eventoEndTime = LocalDateTime.parse(evento.getDataHoraFim(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+
+        if(timeNow.isBefore(eventoBeginTime.minusHours(1L)) || timeNow.isAfter(eventoEndTime)) {
+            return new ResponseEntity<>("Não é possível realizar a entrada no evento.", HttpStatus.BAD_REQUEST);
+        }
+
+        evento.getEntrada().add(usuario);
+        eventoRepository.save(evento);
+
+        usuario.setEntrada(evento);
+        usuarioRepository.save(usuario);
+
+        return new ResponseEntity<>("Entrada realizada com sucesso!", HttpStatus.OK);
     }
 
 }

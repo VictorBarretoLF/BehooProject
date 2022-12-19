@@ -1,5 +1,6 @@
 package victor.testejavaweb.testewebapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,9 @@ public class Evento {
             inverseJoinColumns = { @JoinColumn(name = "usuario_id") })
     private Set<Usuario> usuarios = new HashSet<>();
 
+    @OneToMany(mappedBy="entrada")
+    private Set<Usuario> entrada = new HashSet<>();
+
     public Evento() {
     }
 
@@ -36,6 +40,14 @@ public class Evento {
         this.vagas = vagas;
         this.dataHoraInicio = dataHoraInicio;
         this.dataHoraFim = dataHoraFim;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -76,6 +88,14 @@ public class Evento {
 
     public void setDataHoraFim(String dataHoraFim) {
         this.dataHoraFim = dataHoraFim;
+    }
+
+    public Set<Usuario> getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(Set<Usuario> entrada) {
+        this.entrada = entrada;
     }
 
     @Override
