@@ -1,5 +1,14 @@
 # Eventos Project
 
+## Executando aplicação usando o Docker
+
+1. Clone o repositório para uma pasta local
+2. Em seguida na pasta onde se encontra o arquivo docker-compose.yml execute o seguinte comando:
+    ```
+        docker-compose up
+    ```
+3. O projeto irá ultilizar a porta http://localhost:8080, divirta-se!
+
 ## Executando aplicação usando o IntelliJ
 
 1. Clone o repositório para uma pasta local e abra o projeto usando o intelliJ, execute a classe ***TestewebappApplication***.
