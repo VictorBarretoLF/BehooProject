@@ -17,4 +17,3 @@
 | PUT| api/usuarios/inscricao/:idUsuario/:idEvento| Inscrever usuário em evento|
 | PUT| api/usuarios/cancelar/:idUsuario/:idEvento| Cancelar inscrição do usuário em evento|
 | PUT| api/eventos/entrada/:idUsuario/:idEvento| Realizar entrada do usuário em um evento|
-
