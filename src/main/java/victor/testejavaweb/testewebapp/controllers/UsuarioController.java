@@ -105,7 +105,7 @@ public class UsuarioController {
         if(!evento.getUsuarios().contains(usuario)) {
             return new ResponseEntity<>("Usuário não está inscrito no evento.", HttpStatus.BAD_REQUEST);
         }
-        
+
         // TODO: NÃO SERÁ PERMITIDO O CANCELAMENTO DE UMA INSCRIÇÃO APÓS O USUÁRIO TER REALIZADO A ENTRADA NO EVENTO
 
         evento.getUsuarios().remove(usuario);

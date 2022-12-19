@@ -11,6 +11,8 @@ import victor.testejavaweb.testewebapp.domain.Usuario;
 import victor.testejavaweb.testewebapp.repositories.EventoRepository;
 import victor.testejavaweb.testewebapp.repositories.UsuarioRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class EventoController {
     }
 
     @PutMapping("/eventos/entrada/{usuarioId}/{eventoId}")
-    public ResponseEntity<?> cancelarInscricaoUsuario(
+    public ResponseEntity<?> entrarNoEvento(
             @PathVariable(value = "usuarioId") Long usuarioId,
             @PathVariable(value = "eventoId") Long eventoId) {
 
@@ -62,10 +64,16 @@ public class EventoController {
             return new ResponseEntity<>("Evento não encontrado.", HttpStatus.NOT_FOUND);
         }
 
-        // TODO: O USUÁRIO SÓ PODERÁ ENTRAR NO EVENTO NO PERÍODO DE UMA HORA ANTES DO INICIO DO EVENTO
-
         Usuario usuario = usuarioRepository.findById(usuarioId).get();
         Evento evento = eventoRepository.findById(eventoId).get();
+
+        // TODO: O USUÁRIO SÓ PODERÁ ENTRAR NO EVENTO NO PERÍODO DE UMA HORA ANTES DO INICIO DO EVENTO
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime eventoBeginTime = LocalDateTime.parse(evento.getDataHoraInicio(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+
+        if(timeNow.isBefore(eventoBeginTime.minusHours(1L))) {
+            return new ResponseEntity<>("Ainda não é possível a entrada no evento.", HttpStatus.BAD_REQUEST);
+        }
 
         evento.getEntrada().add(usuario);
         eventoRepository.save(evento);
