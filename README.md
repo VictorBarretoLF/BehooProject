@@ -1,5 +1,11 @@
 # Eventos Project
 
+## Executando aplicação usando o IntelliJ
+
+1. Clone o repositório para uma pasta local e abra o projeto usando o intelliJ, execute a classe ***TestewebappApplication***.
+2. O projeto irá ultilizar a porta http://localhost:8080, divirta-se!
+
+## Rotas, ações e metodos da API:
 | Methods | Urls | Actions |
 |:--------|:----:|--------:|
 | GET| api/eventos| Listar todos os eventos|
