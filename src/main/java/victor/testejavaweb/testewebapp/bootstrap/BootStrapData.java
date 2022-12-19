@@ -29,7 +29,7 @@ public class BootStrapData implements CommandLineRunner {
         evento.setNome("Festa de Rua");
         evento.setVagas(2L);
         evento.setDataHoraInicio("19-12-2022 12:00:00");
-        evento.setDataHoraFim("19-12-2022 22:00:00");
+        evento.setDataHoraFim("19-12-2022 18:00:00");
 
         Usuario usuario = new Usuario("Víctor Barreto");
 

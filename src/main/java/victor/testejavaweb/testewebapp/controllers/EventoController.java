@@ -70,9 +70,10 @@ public class EventoController {
         // TODO: O USUÁRIO SÓ PODERÁ ENTRAR NO EVENTO NO PERÍODO DE UMA HORA ANTES DO INICIO DO EVENTO
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime eventoBeginTime = LocalDateTime.parse(evento.getDataHoraInicio(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        LocalDateTime eventoEndTime = LocalDateTime.parse(evento.getDataHoraFim(), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 
-        if(timeNow.isBefore(eventoBeginTime.minusHours(1L))) {
-            return new ResponseEntity<>("Ainda não é possível a entrada no evento.", HttpStatus.BAD_REQUEST);
+        if(timeNow.isBefore(eventoBeginTime.minusHours(1L)) || timeNow.isAfter(eventoEndTime)) {
+            return new ResponseEntity<>("Não é possível realizar a entrada no evento.", HttpStatus.BAD_REQUEST);
         }
 
         evento.getEntrada().add(usuario);
